@@ -300,15 +300,15 @@ if(LEVELDB_BUILD_TESTS)
   set(build_gmock ON)
 
   # This project is tested using GoogleTest.
-  add_subdirectory("third_party/googletest")
+  # add_subdirectory("third_party/googletest")
 
   # GoogleTest triggers a missing field initializers warning.
-  if(LEVELDB_HAVE_NO_MISSING_FIELD_INITIALIZERS)
-    set_property(TARGET gtest
-        APPEND PROPERTY COMPILE_OPTIONS -Wno-missing-field-initializers)
-    set_property(TARGET gmock
-        APPEND PROPERTY COMPILE_OPTIONS -Wno-missing-field-initializers)
-  endif(LEVELDB_HAVE_NO_MISSING_FIELD_INITIALIZERS)
+  # if(LEVELDB_HAVE_NO_MISSING_FIELD_INITIALIZERS)
+  #   set_property(TARGET gtest
+  #       APPEND PROPERTY COMPILE_OPTIONS -Wno-missing-field-initializers)
+  #   set_property(TARGET gmock
+  #       APPEND PROPERTY COMPILE_OPTIONS -Wno-missing-field-initializers)
+  # endif(LEVELDB_HAVE_NO_MISSING_FIELD_INITIALIZERS)
 
   add_executable(leveldb_tests "")
   target_sources(leveldb_tests
@@ -363,7 +363,7 @@ if(LEVELDB_BUILD_TESTS)
   endif(NOT HAVE_CXX17_HAS_INCLUDE)
 
   add_test(NAME "leveldb_tests" COMMAND "leveldb_tests")
-
+  install(TARGETS leveldb_tests RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}/bin")
   function(leveldb_test test_file)
     get_filename_component(test_target_name "${test_file}" NAME_WE)
 
@@ -408,7 +408,7 @@ if(LEVELDB_BUILD_BENCHMARKS)
   # This project uses Google benchmark for benchmarking.
   set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
   set(BENCHMARK_ENABLE_EXCEPTIONS OFF CACHE BOOL "" FORCE)
-  add_subdirectory("third_party/benchmark")
+  # add_subdirectory("third_party/benchmark")
 
   function(leveldb_benchmark bench_file)
     get_filename_component(bench_target_name "${bench_file}" NAME_WE)
@@ -435,6 +435,7 @@ if(LEVELDB_BUILD_BENCHMARKS)
           LEVELDB_HAS_PORT_CONFIG_H=1
       )
     endif(NOT HAVE_CXX17_HAS_INCLUDE)
+    install(TARGETS "${bench_target_name}" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}/bin")
   endfunction(leveldb_benchmark)
 
   if(NOT BUILD_SHARED_LIBS)
@@ -517,3 +518,5 @@ if(LEVELDB_INSTALL)
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
   )
 endif(LEVELDB_INSTALL)
+
+add_subdirectory("code_read")

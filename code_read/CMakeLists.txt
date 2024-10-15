@@ -1,0 +1,5 @@
+add_executable(db_manipulate db_manipulate.cc)
+target_include_directories(db_manipulate PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(db_manipulate PUBLIC leveldb)
+target_link_libraries(db_manipulate PUBLIC glog gtest gflags)
+install(TARGETS db_manipulate RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
